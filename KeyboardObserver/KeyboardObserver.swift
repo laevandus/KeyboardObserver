@@ -9,7 +9,7 @@
 import UIKit
 
 final class KeyboardObserver {
-    enum ChangeEvent {
+    enum Event {
         case willShow, didShow, willHide, didHide, willChangeFrame, didChangeFrame
     }
 
@@ -19,7 +19,7 @@ final class KeyboardObserver {
         let isLocal: Bool
         let beginFrame: CGRect
         let endFrame: CGRect
-        let changeEvent: ChangeEvent
+        let event: Event
     }
     
     let changeHandler: (Info) -> ()
@@ -38,7 +38,7 @@ final class KeyboardObserver {
     
     @objc private func keyboardChanged(_ notification: Notification) {
         guard let userInfo = notification.userInfo else { fatalError() }
-        let changeEvent: ChangeEvent = {
+        let event: Event = {
             switch notification.name {
             case UIResponder.keyboardWillShowNotification: return .willShow
             case UIResponder.keyboardDidShowNotification: return .didShow
@@ -50,13 +50,13 @@ final class KeyboardObserver {
                 fatalError("Unknown change notification \(notification).")
             }
         }()
-        changeHandler(Info(changeEvent: changeEvent, userInfo: userInfo))
+        changeHandler(Info(event: event, userInfo: userInfo))
     }
 }
 
 fileprivate extension KeyboardObserver.Info {
-    init(changeEvent: KeyboardObserver.ChangeEvent, userInfo: [AnyHashable: Any]) {
-        self.changeEvent = changeEvent
+    init(event: KeyboardObserver.Event, userInfo: [AnyHashable: Any]) {
+        self.event = event
         animationCurve = {
             let rawValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as! Int
             return UIView.AnimationCurve(rawValue: rawValue)!

@@ -19,7 +19,7 @@ final class ViewController: UIViewController {
         super.viewWillAppear(animated)
         keyboardObserver = KeyboardObserver(changeHandler: { [weak self] (info) in
             guard let self = self else { return }
-            switch info.changeEvent {
+            switch info.event {
             case .willShow, .willChangeFrame:
                 self.scrollView.contentInset.bottom = info.endFrame.height
             case .willHide:
