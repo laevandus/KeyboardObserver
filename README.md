@@ -1,3 +1,3 @@
 # KeyboardObserver
 
-Read more: (Observing keyboard visibility on iOS)[https://augmentedcode.io/?p=663]
+Read more: [Observing keyboard visibility on iOS](https://augmentedcode.io/?p=663)
